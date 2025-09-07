@@ -63,7 +63,7 @@ const Index = () => {
     {
       name: "Carlos R.",
       role: "Vendedor de Electrónicos",
-      content: "Mis ventas aumentaron 340% en 3 meses usando AvantPro UY",
+      content: "Mis ventas aumentaron 340% en 3 meses usando ImpulseML",
       rating: 5
     },
     {
@@ -92,7 +92,7 @@ const Index = () => {
               <div className="space-y-4">
                 <Badge className="bg-primary/10 text-primary border-primary/20">
                   <Zap className="h-3 w-3 mr-1" />
-                  La mejor herramienta de análisis para ML Uruguay
+                  La mejor herramienta de análisis para MercadoLibre
                 </Badge>
                 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
@@ -139,7 +139,7 @@ const Index = () => {
               <div className="relative rounded-2xl overflow-hidden shadow-elegant">
                 <img 
                   src={heroImage} 
-                  alt="Dashboard de análisis AvantPro Uruguay"
+                  alt="Dashboard de análisis ImpulseML"
                   className="w-full h-auto"
                 />
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20"></div>
@@ -235,7 +235,7 @@ const Index = () => {
               <span className="text-success">aumentando sus ventas</span>
             </h2>
             <p className="text-xl text-muted-foreground">
-              Historias reales de éxito con AvantPro Uruguay
+              Historias reales de éxito con ImpulseML
             </p>
           </div>
           
@@ -279,7 +279,7 @@ const Index = () => {
               </h2>
               <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
                 Únete a más de 5,000 vendedores que ya están dominando 
-                MercadoLibre Uruguay con AvantPro
+                MercadoLibre Uruguay con ImpulseML
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button variant="secondary" size="lg" className="px-8" asChild>
