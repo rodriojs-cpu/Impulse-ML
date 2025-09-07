@@ -48,11 +48,11 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="sm">
-              Iniciar Sesión
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/auth">Iniciar Sesión</Link>
             </Button>
-            <Button variant="hero" size="sm">
-              Empezar Gratis
+            <Button variant="hero" size="sm" asChild>
+              <Link to="/auth">Empezar Gratis</Link>
             </Button>
           </div>
 
@@ -83,11 +83,11 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="px-3 py-2 space-y-2">
-              <Button variant="ghost" size="sm" className="w-full justify-start">
-                Iniciar Sesión
+              <Button variant="ghost" size="sm" className="w-full justify-start" asChild>
+                <Link to="/auth">Iniciar Sesión</Link>
               </Button>
-              <Button variant="hero" size="sm" className="w-full">
-                Empezar Gratis
+              <Button variant="hero" size="sm" className="w-full" asChild>
+                <Link to="/auth">Empezar Gratis</Link>
               </Button>
             </div>
           </div>
