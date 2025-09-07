@@ -75,7 +75,7 @@ const Precios = () => {
     {
       name: "Carlos Rodriguez",
       role: "Vendedor de Electrónicos",
-      content: "Gracias a AvantPro UY logré incrementar mis ventas en un 340% en solo 3 meses. La herramienta es increíble.",
+      content: "Gracias a ImpulseML logré incrementar mis ventas en un 340% en solo 3 meses. La herramienta es increíble.",
       rating: 5,
       sales: "+340%"
     },
@@ -174,7 +174,7 @@ const Precios = () => {
         <Card className="mb-16">
           <CardHeader>
             <CardTitle className="text-center text-2xl">
-              ¿Por qué elegir AvantPro UY?
+              ¿Por qué elegir ImpulseML?
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -260,7 +260,7 @@ const Precios = () => {
             </h2>
             <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
               Únete a más de 5,000 vendedores que ya están aumentando sus ventas 
-              con AvantPro Uruguay
+              con ImpulseML Uruguay
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="secondary" size="lg" className="px-8">
