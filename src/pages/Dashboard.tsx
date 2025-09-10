@@ -83,13 +83,24 @@ const Dashboard = () => {
       <Navbar />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">
-            Dashboard de Análisis
-          </h1>
-          <p className="text-muted-foreground">
-            Descubre oportunidades en MercadoLibre Uruguay
-          </p>
+        <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              Dashboard de Análisis
+            </h1>
+            <p className="text-muted-foreground">
+              Descubre oportunidades en MercadoLibre Uruguay
+            </p>
+          </div>
+          <Button
+            variant="hero"
+            onClick={() => {
+              window.location.href =
+                "https://stffmybggmfgrkskiykl.functions.supabase.co/mercadolibre-auth?start=1";
+            }}
+          >
+            Conectar MercadoLibre
+          </Button>
         </div>
 
         {/* Search Bar */}

@@ -15,6 +15,32 @@ serve(async (req) => {
     const url = new URL(req.url);
     
     if (req.method === 'GET') {
+      // Start OAuth flow
+      const start = url.searchParams.get('start');
+      if (start) {
+        const appId = Deno.env.get('MELI_APP_ID');
+        if (!appId) {
+          console.error('MELI_APP_ID is not set');
+          return new Response(
+            JSON.stringify({ error: 'Missing MELI_APP_ID secret' }),
+            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        const redirectUri = `${url.origin}/mercadolibre-auth`;
+        const state = crypto.randomUUID();
+        const authUrl =
+          `https://auth.mercadolibre.com.uy/authorization?response_type=code&client_id=${encodeURIComponent(appId)}&redirect_uri=${encodeURIComponent(redirectUri)}&state=${encodeURIComponent(state)}`;
+
+        return new Response(null, {
+          status: 302,
+          headers: {
+            ...corsHeaders,
+            Location: authUrl,
+          },
+        });
+      }
+
       // Handle OAuth callback from MercadoLibre
       const code = url.searchParams.get('code');
       const state = url.searchParams.get('state');
@@ -23,8 +49,7 @@ serve(async (req) => {
         console.log('Received OAuth callback with code:', code);
         console.log('State:', state);
         
-        // Here you would exchange the code for an access token
-        // For now, we'll just log it and redirect
+        // TODO: Exchange code for access token and persist
         
         // Redirect to dashboard with success
         const redirectUrl = `${url.origin}/dashboard?auth=success`;
