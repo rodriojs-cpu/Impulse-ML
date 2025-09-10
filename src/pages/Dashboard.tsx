@@ -1,21 +1,74 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Search, 
-  TrendingUp, 
-  TrendingDown, 
-  Eye, 
-  ShoppingCart, 
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import Navbar from "@/components/layout/Navbar";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  Search,
+  TrendingUp,
+  TrendingDown,
+  Eye,
+  ShoppingCart,
   Users,
   BarChart3,
   Target,
-  Zap
+  Zap,
+  CheckCircle,
+  XCircle
 } from "lucide-react";
-import Navbar from "@/components/layout/Navbar";
 
 const Dashboard = () => {
+  const [meliIntegration, setMeliIntegration] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+
+  // Check MercadoLibre integration status
+  useEffect(() => {
+    const checkMeliIntegration = async () => {
+      if (!user) return;
+      
+      try {
+        const { data, error } = await (supabase as any)
+          .from('meli_integrations')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+          
+        if (!error && data) {
+          setMeliIntegration(data);
+        }
+      } catch (error) {
+        console.error('Error checking MercadoLibre integration:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Check for auth callback parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const authStatus = urlParams.get('auth');
+    if (authStatus === 'success') {
+      // Refresh integration status
+      setTimeout(() => {
+        checkMeliIntegration();
+      }, 1000);
+    } else if (authStatus === 'error') {
+      const message = urlParams.get('message');
+      console.error('MercadoLibre auth error:', message);
+    }
+
+    checkMeliIntegration();
+  }, [user]);
+
+  const handleConnectMercadoLibre = () => {
+    window.location.href = 
+      "https://stffmybggmfgrkskiykl.functions.supabase.co/mercadolibre-auth?start=1";
+  };
+
   const stats = [
     {
       title: "Productos Analizados",
@@ -92,16 +145,35 @@ const Dashboard = () => {
               Descubre oportunidades en MercadoLibre Uruguay
             </p>
           </div>
-          <Button
-            variant="hero"
-            onClick={() => {
-              window.location.href =
-                "https://stffmybggmfgrkskiykl.functions.supabase.co/mercadolibre-auth?start=1";
-            }}
-          >
-            Conectar MercadoLibre
-          </Button>
+          <div className="flex items-center gap-4">
+            {meliIntegration ? (
+              <div className="flex items-center gap-2 px-3 py-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                <CheckCircle className="h-4 w-4 text-green-600" />
+                <span className="text-sm font-medium text-green-700 dark:text-green-400">
+                  MercadoLibre Conectado
+                </span>
+              </div>
+            ) : (
+              <Button
+                variant="hero"
+                onClick={handleConnectMercadoLibre}
+                disabled={loading}
+              >
+                Conectar MercadoLibre
+              </Button>
+            )}
+          </div>
         </div>
+
+        {/* Connection Status Alert */}
+        {!meliIntegration && !loading && (
+          <Alert className="mb-6">
+            <XCircle className="h-4 w-4" />
+            <AlertDescription>
+              Para acceder a datos reales de MercadoLibre, necesitas conectar tu cuenta.
+            </AlertDescription>
+          </Alert>
+        )}
 
         {/* Search Bar */}
         <Card className="mb-8">
