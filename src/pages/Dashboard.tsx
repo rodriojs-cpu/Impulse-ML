@@ -1,29 +1,31 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/layout/Navbar";
+import UserProfile from "@/components/UserProfile";
+import ProductSearch from "@/components/ProductSearch";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  Search,
   TrendingUp,
   TrendingDown,
   Eye,
-  ShoppingCart,
-  Users,
   BarChart3,
   Target,
-  Zap,
   CheckCircle,
-  XCircle
+  XCircle,
+  User,
+  Search,
+  Settings
 } from "lucide-react";
 
 const Dashboard = () => {
   const [meliIntegration, setMeliIntegration] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("overview");
   const { user } = useAuth();
 
   // Check MercadoLibre integration status
@@ -142,7 +144,7 @@ const Dashboard = () => {
               Dashboard de Análisis
             </h1>
             <p className="text-muted-foreground">
-              Descubre oportunidades en MercadoLibre Uruguay
+              Bienvenido de vuelta, {user?.user_metadata?.full_name || user?.email}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -170,109 +172,144 @@ const Dashboard = () => {
           <Alert className="mb-6">
             <XCircle className="h-4 w-4" />
             <AlertDescription>
-              Para acceder a datos reales de MercadoLibre, necesitas conectar tu cuenta.
+              Para acceder a datos completos de MercadoLibre, conecta tu cuenta. 
+              Aún puedes realizar búsquedas básicas sin conectar.
             </AlertDescription>
           </Alert>
         )}
 
-        {/* Search Bar */}
-        <Card className="mb-8">
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input 
-                  placeholder="Buscar productos en MercadoLibre Uruguay..."
-                  className="pl-10"
-                />
-              </div>
-              <Button variant="hero" className="px-8">
-                <Zap className="mr-2 h-4 w-4" />
-                Analizar
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Main Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="overview" className="flex items-center">
+              <BarChart3 className="h-4 w-4 mr-2" />
+              Resumen
+            </TabsTrigger>
+            <TabsTrigger value="search" className="flex items-center">
+              <Search className="h-4 w-4 mr-2" />
+              Buscar Productos
+            </TabsTrigger>
+            <TabsTrigger value="profile" className="flex items-center">
+              <User className="h-4 w-4 mr-2" />
+              Mi Perfil
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <Card key={index} className="hover:shadow-elegant transition-smooth">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground">
-                        {stat.title}
-                      </p>
-                      <p className="text-2xl font-bold text-foreground">
-                        {stat.value}
-                      </p>
-                      <div className="flex items-center mt-2">
-                        {stat.trend === "up" ? (
-                          <TrendingUp className="h-4 w-4 text-success mr-1" />
-                        ) : (
-                          <TrendingDown className="h-4 w-4 text-destructive mr-1" />
-                        )}
-                        <span 
-                          className={`text-sm font-medium ${
-                            stat.trend === "up" ? "text-success" : "text-destructive"
-                          }`}
-                        >
-                          {stat.change}
-                        </span>
+          <TabsContent value="overview" className="space-y-6">
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {stats.map((stat, index) => {
+                const Icon = stat.icon;
+                return (
+                  <Card key={index} className="hover:shadow-elegant transition-smooth">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">
+                            {stat.title}
+                          </p>
+                          <p className="text-2xl font-bold text-foreground">
+                            {stat.value}
+                          </p>
+                          <div className="flex items-center mt-2">
+                            {stat.trend === "up" ? (
+                              <TrendingUp className="h-4 w-4 text-success mr-1" />
+                            ) : (
+                              <TrendingDown className="h-4 w-4 text-destructive mr-1" />
+                            )}
+                            <span 
+                              className={`text-sm font-medium ${
+                                stat.trend === "up" ? "text-success" : "text-destructive"
+                              }`}
+                            >
+                              {stat.change}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="p-3 bg-primary/10 rounded-lg">
+                          <Icon className="h-6 w-6 text-primary" />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+
+            {/* Getting Started Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Settings className="mr-2 h-5 w-5 text-primary" />
+                  Primeros Pasos
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        meliIntegration ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
+                      }`}>
+                        <CheckCircle className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground">Conectar MercadoLibre</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {meliIntegration ? 'Conectado correctamente' : 'Conecta tu cuenta para datos completos'}
+                        </p>
                       </div>
                     </div>
-                    <div className="p-3 bg-primary/10 rounded-lg">
-                      <Icon className="h-6 w-6 text-primary" />
-                    </div>
+                    {!meliIntegration && (
+                      <Button variant="outline" size="sm" onClick={handleConnectMercadoLibre}>
+                        Conectar
+                      </Button>
+                    )}
                   </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* Top Products */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <TrendingUp className="mr-2 h-5 w-5 text-primary" />
-              Productos Más Analizados
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {topProducts.map((product, index) => (
-                <div key={index} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-smooth">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-foreground mb-1">
-                      {product.title}
-                    </h3>
-                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                      <span className="flex items-center">
-                        <Eye className="h-4 w-4 mr-1" />
-                        {product.visits} visitas
-                      </span>
-                      <span className="flex items-center">
-                        <ShoppingCart className="h-4 w-4 mr-1" />
-                        {product.sales} ventas
-                      </span>
-                      <Badge variant="outline">{product.category}</Badge>
+                  
+                  <div className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                        <Search className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground">Buscar Productos</h3>
+                        <p className="text-sm text-muted-foreground">Encuentra productos para analizar</p>
+                      </div>
                     </div>
+                    <Button variant="outline" size="sm" onClick={() => setActiveTab("search")}>
+                      Buscar
+                    </Button>
                   </div>
-                  <div className="text-right">
-                    <p className="text-lg font-bold text-success">
-                      {product.conversion}
-                    </p>
-                    <p className="text-xs text-muted-foreground">conversión</p>
+                  
+                  <div className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center">
+                        <User className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-foreground">Completar Perfil</h3>
+                        <p className="text-sm text-muted-foreground">Personaliza tu experiencia</p>
+                      </div>
+                    </div>
+                    <Button variant="outline" size="sm" onClick={() => setActiveTab("profile")}>
+                      Editar
+                    </Button>
                   </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="search">
+            <ProductSearch />
+          </TabsContent>
+
+          <TabsContent value="profile">
+            <UserProfile />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

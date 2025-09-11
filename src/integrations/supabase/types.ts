@@ -14,7 +14,129 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      meli_integrations: {
+        Row: {
+          access_token: string
+          created_at: string
+          id: string
+          meli_user_id: string
+          refresh_token: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_token: string
+          created_at?: string
+          id?: string
+          meli_user_id: string
+          refresh_token: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_token?: string
+          created_at?: string
+          id?: string
+          meli_user_id?: string
+          refresh_token?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          category: string | null
+          conversion_rate: number | null
+          created_at: string
+          currency: string | null
+          id: string
+          last_analyzed: string | null
+          meli_id: string
+          price: number | null
+          sales: number | null
+          seller_reputation: Json | null
+          title: string
+          updated_at: string
+          user_id: string
+          visits: number | null
+        }
+        Insert: {
+          category?: string | null
+          conversion_rate?: number | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          last_analyzed?: string | null
+          meli_id: string
+          price?: number | null
+          sales?: number | null
+          seller_reputation?: Json | null
+          title: string
+          updated_at?: string
+          user_id: string
+          visits?: number | null
+        }
+        Update: {
+          category?: string | null
+          conversion_rate?: number | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          last_analyzed?: string | null
+          meli_id?: string
+          price?: number | null
+          sales?: number | null
+          seller_reputation?: Json | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          visits?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          company: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          subscription_plan: string | null
+          subscription_status: string | null
+          trial_ends_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          subscription_plan?: string | null
+          subscription_status?: string | null
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          company?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          subscription_plan?: string | null
+          subscription_status?: string | null
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
