@@ -271,8 +271,6 @@ const Legal = () => {
           </CardContent>
         </Card>
       </TabsContent>
-            </Card>
-          </TabsContent>
 
           {/* Contrato de Suscripción */}
           <TabsContent value="subscription">
@@ -431,11 +429,11 @@ const Legal = () => {
 
                   <section>
                     <h3 className="text-lg font-semibold text-foreground mb-3">7. Soporte y Contacto</h3>
-                    <p className="text-muted-foreground">
-                      Para consultas sobre facturación y suscripciones: <strong>billing@impulseml.com</strong><br>
-                      Soporte técnico: <strong>support@impulseml.com</strong><br>
-                      Horario de atención: 24/7 para suscriptores Pro
-                    </p>
+                     <p className="text-muted-foreground">
+                       Para consultas sobre facturación y suscripciones: <strong>billing@impulseml.com</strong><br />
+                       Soporte técnico: <strong>support@impulseml.com</strong><br />
+                       Horario de atención: 24/7 para suscriptores Pro
+                     </p>
                   </section>
                 </div>
               </CardContent>
@@ -614,13 +612,6 @@ const Legal = () => {
                   </section>
                 </div>
               </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  );
-};
             </Card>
           </TabsContent>
         </Tabs>
